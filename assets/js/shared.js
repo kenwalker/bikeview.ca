@@ -1,7 +1,8 @@
+var ensureTwitterLoaded = null;
+
 function startUp() {
   twitterIDs().forEach(function(tweeterId, index) {
     var node = document.createElement("article");
-    console.log(index);
     node.id = "tweet" + index;
     document.getElementById("tweetlist").appendChild(node);
     twttr.widgets.createTweet(
@@ -15,7 +16,13 @@ function startUp() {
   });
 }
 
+function twitterAvailable() {
+  if (twttr) {
+    clearInterval(ensureTwitterLoaded);
+    startUp();
+  }
+}
 
 $(document).ready(function() {
-  startUp();
+  ensureTwitterLoaded = setInterval(twitterAvailable, 10);
 });
